@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Perfil - SmartFinance</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet">
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link
+            rel="stylesheet"
+            th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <main class="content">
+
+        <div class="profile-page">
+
+            <div class="mb-4">
+
+                <h2 class="fw-bold">
+                    Mi perfil
+                </h2>
+
+                <p class="text-muted">
+                    Gestiona tus datos personales y la seguridad de tu cuenta.
+                </p>
+
+            </div>
+
+            <!-- Datos personales -->
+
+            <div class="card shadow-sm profile-card mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold mb-4 profile-section-title">
+
+                        <i class="bi bi-person"></i>
+
+                        Datos personales
+
+                    </h4>
+
+                    <form th:action="@{/profile}"
+                          th:object="${profileForm}"
+                          method="post">
+
+                        <div class="mb-3">
+
+                            <label for="name"
+                                   class="form-label">
+
+                                Nombre
+
+                            </label>
+
+                            <input type="text"
+                                   id="name"
+                                   th:field="*{name}"
+                                   class="form-control"
+                                   placeholder="Tu nombre">
+
+                            <div th:if="${#fields.hasErrors('name')}"
+                                 th:errors="*{name}"
+                                 class="text-danger small mt-1">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="email"
+                                   class="form-label">
+
+                                Email
+
+                            </label>
+
+                            <input type="email"
+                                   id="email"
+                                   th:field="*{email}"
+                                   class="form-control"
+                                   placeholder="tu@email.com">
+
+                            <div th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}"
+                                 class="text-danger small mt-1">
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <h5 class="fw-bold mb-3">
+
+                            Cambiar contraseña
+
+                        </h5>
+
+                        <p class="text-muted small">
+
+                            Si no quieres cambiar tu contraseña,
+                            deja estos campos vacíos.
+
+                        </p>
+
+                        <div th:if="${passwordError}"
+                             class="alert alert-danger">
+
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+
+                            <span th:text="${passwordError}"></span>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="currentPassword"
+                                   class="form-label">
+
+                                Contraseña actual
+
+                            </label>
+
+                            <input type="password"
+                                   id="currentPassword"
+                                   th:field="*{currentPassword}"
+                                   class="form-control"
+                                   autocomplete="current-password">
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="newPassword"
+                                   class="form-label">
+
+                                Nueva contraseña
+
+                            </label>
+
+                            <input type="password"
+                                   id="newPassword"
+                                   th:field="*{newPassword}"
+                                   class="form-control"
+                                   autocomplete="new-password">
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="confirmPassword"
+                                   class="form-label">
+
+                                Confirmar nueva contraseña
+
+                            </label>
+
+                            <input type="password"
+                                   id="confirmPassword"
+                                   th:field="*{confirmPassword}"
+                                   class="form-control"
+                                   autocomplete="new-password">
+
+                        </div>
+
+                        <div class="profile-actions">
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-check-lg me-1"></i>
+
+                                Guardar cambios
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <!-- Eliminar cuenta -->
+
+            <div class="card shadow-sm border-danger profile-card profile-danger">
+
+                <div class="card-body">
+
+                    <h4 class="fw-bold text-danger mb-3 profile-section-title">
+
+                        <i class="bi bi-trash"></i>
+
+                        Eliminar cuenta
+
+                    </h4>
+
+                    <p class="text-muted">
+
+                        Esta acción eliminará tu cuenta y todos los
+                        ingresos y gastos asociados. No se puede deshacer.
+
+                    </p>
+
+                    <div th:if="${deleteError}"
+                         class="alert alert-danger">
+
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+
+                        <span th:text="${deleteError}"></span>
+
+                    </div>
+
+                    <form th:action="@{/profile/delete}"
+                          th:object="${profileForm}"
+                          method="post"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.');">
+
+                        <div class="mb-3">
+
+                            <label for="deletePassword"
+                                   class="form-label">
+
+                                Contraseña actual
+
+                            </label>
+
+                            <input type="password"
+                                   id="deletePassword"
+                                   th:field="*{deletePassword}"
+                                   class="form-control"
+                                   autocomplete="current-password"
+                                   required>
+
+                        </div>
+
+                        <div class="profile-actions">
+
+                            <button type="submit"
+                                    class="btn btn-danger">
+
+                                <i class="bi bi-trash me-1"></i>
+
+                                Eliminar mi cuenta
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

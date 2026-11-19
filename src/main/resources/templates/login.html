@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Iniciar sesión - SmartFinance</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<button type="button" class="btn btn-outline-secondary btn-sm theme-toggle auth-theme-toggle"
+        data-theme-toggle aria-label="Activar modo oscuro" title="Activar modo oscuro">
+    <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+    <span data-theme-label>Modo oscuro</span>
+</button>
+
+<div class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="card auth-card">
+
+            <div class="card-body">
+
+                <div class="text-center mb-4">
+
+                    <h1 class="h3 auth-brand">
+                        <i class="bi bi-wallet2 me-2"></i>
+                        SmartFinance
+                    </h1>
+
+                    <p class="text-muted auth-subtitle">
+                        Inicia sesión para continuar
+                    </p>
+
+                </div>
+
+                <div th:if="${errorMessage != null}" class="flash-container flash-container-auth"
+                     aria-label="Notificaciones" aria-live="polite">
+                    <div class="flash-message flash-message-error" role="alert" data-auto-dismiss="5000">
+                        <i class="bi bi-exclamation-circle-fill flash-message-icon" aria-hidden="true"></i>
+                        <span class="flash-message-text" th:text="${errorMessage}"></span>
+                        <button type="button" class="flash-dismiss" data-dismiss-flash aria-label="Cerrar aviso">
+                            <i class="bi bi-x-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div th:if="${successMessage != null}" class="flash-container flash-container-auth"
+                     aria-label="Notificaciones" aria-live="polite">
+                    <div class="flash-message flash-message-success" role="status" data-auto-dismiss="5000">
+                        <i class="bi bi-check-circle-fill flash-message-icon" aria-hidden="true"></i>
+                        <span class="flash-message-text" th:text="${successMessage}"></span>
+                        <button type="button" class="flash-dismiss" data-dismiss-flash aria-label="Cerrar aviso">
+                            <i class="bi bi-x-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div th:if="${param.error}"
+                     class="alert alert-danger">
+
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Email o contraseña incorrectos.
+
+                </div>
+
+                <div th:if="${param.logout}"
+                     class="alert alert-success">
+
+                    <i class="bi bi-check-circle me-2"></i>
+                    Has cerrado sesión correctamente.
+
+                </div>
+
+                <form th:action="@{/login}"
+                      method="post">
+
+                    <div class="mb-3">
+
+                        <label for="username"
+                               class="form-label">
+                            Email
+                        </label>
+
+                        <input type="email"
+                               id="username"
+                               name="username"
+                               class="form-control"
+                               autocomplete="email"
+                               required>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label for="password"
+                               class="form-label">
+                            Contraseña
+                        </label>
+
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               class="form-control"
+                               autocomplete="current-password"
+                               required>
+
+                    </div>
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+
+                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                        Iniciar sesión
+
+                    </button>
+
+                </form>
+
+                <div class="text-end mt-2">
+                    <a th:href="@{/forgot-password}" class="small">¿Has olvidado tu contraseña?</a>
+                </div>
+
+                <form th:action="@{/verification/resend}" method="post" class="mt-3">
+                    <label for="resendEmail" class="form-label small">¿Necesitas recibir otra vez el correo de verificación?</label>
+                    <div class="input-group">
+                        <input id="resendEmail" name="email" type="email" class="form-control" placeholder="Tu correo" required>
+                        <button class="btn btn-outline-secondary" type="submit">Reenviar</button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-4">
+
+                    <span class="text-muted">
+                        ¿No tienes una cuenta?
+                    </span>
+
+                    <a th:href="@{/register}"
+                       class="auth-link ms-1">
+                        Crear cuenta
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script th:src="@{/js/theme.js}" defer></script>
+<script th:src="@{/js/flash-messages.js}" defer></script>
+
+</body>
+
+</html>

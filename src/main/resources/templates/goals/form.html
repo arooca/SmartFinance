@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${editing ? 'Editar meta - SmartFinance' : 'Nueva meta - SmartFinance'}">Meta de ahorro - SmartFinance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="app-layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main class="content">
+        <div class="form-page">
+            <div class="mb-4">
+                <h1 th:text="${editing ? 'Editar meta de ahorro' : 'Nueva meta de ahorro'}">Nueva meta de ahorro</h1>
+                <p class="text-muted mb-0">Define cuánto quieres ahorrar y para cuándo.</p>
+            </div>
+            <div class="card form-card"><div class="card-body">
+                <form th:action="@{/goals/save}" th:object="${goal}" method="post">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="mb-4">
+                        <label for="name" class="form-label">Nombre de la meta</label>
+                        <input id="name" type="text" class="form-control" th:field="*{name}" maxlength="100" placeholder="Ej. Viaje de verano">
+                        <div class="text-danger small mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label for="targetAmount" class="form-label">Importe objetivo (€)</label>
+                            <input id="targetAmount" type="number" class="form-control" th:field="*{targetAmount}" min="0.01" step="0.01" placeholder="1500.00">
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('targetAmount')}" th:errors="*{targetAmount}"></div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="targetDate" class="form-label">Fecha objetivo</label>
+                            <input id="targetDate" name="targetDate" type="date" class="form-control" th:value="${targetDateValue}">
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('targetDate')}" th:errors="*{targetDate}"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="inviteEmail" class="form-label" th:text="${editing ? 'Añadir participantes' : 'Compartir la meta'}">Compartir la meta</label>
+                        <textarea id="inviteEmail" class="form-control" th:field="*{inviteEmail}" rows="2" maxlength="2540" placeholder="correo1@ejemplo.com, correo2@ejemplo.com"></textarea>
+                        <div class="form-text" th:if="${editing}">Opcional. Añade una o varias cuentas; cada persona tendrá que aceptar su invitación. Separa los correos por coma, punto y coma o línea.</div>
+                        <div class="form-text" th:if="${!editing}">Opcional. La meta no aparecerá hasta que la acepte al menos una persona. Puedes invitar hasta 10 cuentas, separando los correos por coma, punto y coma o línea.</div>
+                        <div class="text-danger small mt-1" th:if="${#fields.hasErrors('inviteEmail')}" th:errors="*{inviteEmail}"></div>
+                    </div>
+                    <div class="form-actions">
+                        <a th:href="@{/goals}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Guardar meta</button>
+                    </div>
+                </form>
+            </div></div>
+        </div>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

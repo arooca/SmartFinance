@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<aside class="sidebar"
+       th:fragment="sidebar">
+
+    <h4 class="sidebar-title">
+        Menú
+    </h4>
+
+    <nav class="sidebar-nav">
+
+        <a th:href="@{/dashboard}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-speedometer2"></i>
+
+            <span>Dashboard</span>
+
+        </a>
+
+        <a th:href="@{/movements}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-list-task"></i>
+
+            <span>Movimientos</span>
+
+        </a>
+
+        <a th:href="@{/statistics}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-bar-chart"></i>
+
+            <span>Estadísticas</span>
+
+        </a>
+
+        <a th:href="@{/budgets}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-wallet2"></i>
+
+            <span>Presupuestos</span>
+
+        </a>
+
+        <a th:href="@{/movements/import}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-upload"></i>
+
+            <span>Importar movimientos</span>
+
+        </a>
+
+        <a th:href="@{/categories}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-tags"></i>
+
+            <span>Categorías</span>
+
+        </a>
+
+        <a th:href="@{/goals}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-bullseye"></i>
+
+            <span>Metas de ahorro</span>
+
+        </a>
+
+        <a th:href="@{/recurring}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-arrow-repeat"></i>
+
+            <span>Recurrentes</span>
+
+        </a>
+
+        <a th:href="@{/profile}"
+           class="nav-link sidebar-link">
+
+            <i class="bi bi-person"></i>
+
+            <span>Perfil</span>
+
+        </a>
+
+    </nav>
+
+</aside>
+
+</body>
+
+</html>

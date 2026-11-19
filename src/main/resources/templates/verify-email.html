@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar correo - SmartFinance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="auth-page">
+    <div class="auth-container">
+        <div class="card auth-card">
+            <div class="card-body text-center">
+                <h1 class="h3 mb-3">Verifica tu correo</h1>
+                <div th:if="${invalidToken}" class="alert alert-warning" role="status">
+                    Este enlace no es válido, ya se utilizó o ha caducado. Puedes solicitar otro desde el inicio de sesión.
+                </div>
+                <div th:unless="${invalidToken}">
+                    <p class="text-muted">Pulsa el botón para confirmar que esta dirección de correo te pertenece.</p>
+                    <form th:action="@{/verify-email}" method="post">
+                        <input type="hidden" name="token" th:value="${token}">
+                        <button class="btn btn-primary w-100" type="submit">Confirmar correo</button>
+                    </form>
+                </div>
+                <a th:href="@{/login}" class="d-block mt-3">Volver a iniciar sesión</a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

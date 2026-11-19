@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Metas de ahorro - SmartFinance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="app-layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main class="content">
+        <div class="page-header mb-4">
+            <div>
+                <h1 class="h2 mb-1">Metas de ahorro</h1>
+                <p class="text-muted mb-0">Sigue tu progreso y registra tus aportaciones.</p>
+                <p class="text-muted small mb-0">Las aportaciones quedan apartadas en SmartFinance sin reducir el saldo en ese momento. Al vencimiento se registra un gasto interno por lo aportado por cada participante; no se realiza ningún cargo bancario.</p>
+            </div>
+            <a th:href="@{/goals/new}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nueva meta</a>
+        </div>
+
+        <div th:if="${#lists.isEmpty(goals)}" class="card shadow-sm">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-bullseye fs-1 text-muted"></i>
+                <h5 class="mt-3">Todavía no tienes metas de ahorro</h5>
+                <p class="text-muted">Crea una meta para seguir cuánto te falta para alcanzar tu objetivo.</p>
+                <a th:href="@{/goals/new}" class="btn btn-primary">Crear mi primera meta</a>
+            </div>
+        </div>
+
+        <div class="row g-4" th:if="${!#lists.isEmpty(goals)}">
+            <div class="col-md-6 col-xl-4" th:each="goal : ${goals}">
+                <article class="card shadow-sm h-100"><div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                        <div class="min-width-0">
+                            <h5 class="mb-1 text-break" th:text="${goal.name}">Viaje</h5>
+                            <small class="text-muted">Objetivo para <span th:text="${#temporals.format(goal.targetDate, 'dd/MM/yyyy')}">01/01/2027</span></small>
+                            <div th:if="${goal.shared}" class="small text-primary mt-1">
+                                <i class="bi bi-people me-1"></i>
+                                <span th:text="${goal.user.name}">Creador</span>
+                                <span th:each="member : ${goal.otherMembers}" th:text="${' · ' + member.name}"> · Participante</span>
+                            </div>
+                        </div>
+                        <div class="dropdown flex-shrink-0" th:if="${!goal.settled}">
+                            <button class="btn btn-sm btn-link text-muted" type="button" data-bs-toggle="dropdown" aria-label="Opciones de la meta"><i class="bi bi-three-dots-vertical"></i></button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li th:if="${goal.canManage(currentUserId)}"><a class="dropdown-item" th:href="@{/goals/edit/{id}(id=${goal.id})}"><i class="bi bi-pencil me-2"></i>Editar</a></li>
+                                <li th:if="${goal.canManage(currentUserId)}"><hr class="dropdown-divider"></li>
+                                <li><form th:action="@{/goals/delete/{id}(id=${goal.id})}" method="post" onsubmit="return confirm('¿Eliminar esta meta de tu cuenta? Si es compartida, los demás participantes podrán decidir si la conservan.');"><button class="dropdown-item text-danger" type="submit"><i class="bi bi-trash me-2"></i>Eliminar de mi cuenta</button></form></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-3 mb-2">
+                        <span>Ahorrado</span>
+                        <strong><span th:text="${#numbers.formatDecimal(goal.currentAmount, 1, 2)}">0,00</span> € / <span th:text="${#numbers.formatDecimal(goal.targetAmount, 1, 2)}">1000,00</span> €</strong>
+                    </div>
+                    <div class="progress" style="height: 10px;" role="progressbar" th:attr="aria-valuenow=${goal.percentage > 100 ? 100 : goal.percentage},aria-valuemin=0,aria-valuemax=100,aria-label=${'Progreso de ' + goal.name}">
+                        <div class="progress-bar" th:style="'width:' + ${goal.percentage > 100 ? 100 : goal.percentage} + '%'" th:classappend="${goal.completed ? ' bg-success' : ' bg-primary'}"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center gap-2 mt-2 small">
+                        <span th:text="${#numbers.formatDecimal(goal.percentage, 1, 1)} + '%'">0%</span>
+                        <span th:if="${goal.settled}" class="text-success">Meta finalizada</span>
+                        <span th:if="${!goal.settled and goal.completed}" class="text-success">Objetivo alcanzado; pendiente de vencimiento</span>
+                        <span th:if="${!goal.settled and !goal.completed}" class="text-muted">En progreso</span>
+                    </div>
+
+                    <form th:if="${!goal.settled and !goal.completed}" th:action="@{/goals/{id}/contributions(id=${goal.id})}" method="post" class="d-flex gap-2 mt-4">
+                        <label class="visually-hidden" th:for="${'contribution-' + goal.id}">Añadir aportación en euros</label>
+                        <input class="form-control form-control-sm" type="number" name="amount" th:id="${'contribution-' + goal.id}" min="0.01" step="0.01" th:attr="max=${goal.targetAmount.subtract(goal.currentAmount)}" placeholder="Aportación (€)" required>
+                        <button class="btn btn-outline-primary btn-sm text-nowrap" type="submit"><i class="bi bi-plus-lg me-1"></i>Añadir</button>
+                    </form>
+                    <p th:if="${goal.settled and goal.currentAmount > 0}" class="small text-muted mt-4 mb-0">El cargo por el importe aportado por cada usuario aparece como gasto en Movimientos.</p>
+                    <p th:if="${goal.settled and goal.currentAmount == 0}" class="small text-muted mt-4 mb-0">No hubo aportaciones, así que no se generó ningún gasto.</p>
+                </div></article>
+            </div>
+        </div>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Estadísticas - SmartFinance</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <main class="content">
+
+        <div class="statistics-page py-4">
+
+            <div class="mb-4">
+
+                <h1 class="h2">
+                    Estadísticas
+                </h1>
+
+                <p class="text-muted">
+
+                    Resumen financiero de
+
+                    <span th:text="${currentMonth}">
+                        2026-09
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <!-- TARJETAS PRINCIPALES -->
+
+            <div class="row g-4 mb-4">
+
+
+                <!-- INGRESOS -->
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="card stat-card h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <p class="text-muted mb-1">
+                                        Ingresos
+                                    </p>
+
+                                    <h3 class="mb-0">
+
+                                        <span th:text="${#numbers.formatDecimal(currentIncome, 1, 2)}">
+                                            0.00
+                                        </span>
+
+                                        €
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-arrow-down-circle fs-2 text-success"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Mes actual
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GASTOS -->
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="card stat-card h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <p class="text-muted mb-1">
+                                        Gastos
+                                    </p>
+
+                                    <h3 class="mb-0">
+
+                                        <span th:text="${#numbers.formatDecimal(currentExpense, 1, 2)}">
+                                            0.00
+                                        </span>
+
+                                        €
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-arrow-up-circle fs-2 text-danger"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Mes actual
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BALANCE -->
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="card stat-card h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <p class="text-muted mb-1">
+                                        Balance
+                                    </p>
+
+                                    <h3 class="mb-0">
+
+                                        <span th:text="${#numbers.formatDecimal(currentBalance, 1, 2)}">
+                                            0.00
+                                        </span>
+
+                                        €
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-wallet2 fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Ingresos - gastos
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- AHORRO -->
+
+                <div class="col-md-6 col-xl-3">
+
+                    <div class="card stat-card h-100">
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <div>
+
+                                    <p class="text-muted mb-1">
+                                        Ahorro
+                                    </p>
+
+                                    <h3 class="mb-0">
+
+                                        <span th:text="${#numbers.formatDecimal(savingPercentage, 1, 2)}">
+                                            0.00
+                                        </span>
+
+                                        %
+
+                                    </h3>
+
+                                </div>
+
+                                <i class="bi bi-piggy-bank fs-2"></i>
+
+                            </div>
+
+                            <small class="text-muted">
+                                Porcentaje sobre ingresos
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- COMPARACIÓN -->
+
+            <div class="card mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="card-title mb-4">
+                        Comparación con el mes anterior
+                    </h4>
+
+                    <div class="row g-4">
+
+                        <div class="col-md-4">
+
+                            <p class="text-muted mb-1">
+                                Variación de ingresos
+                            </p>
+
+                            <h4 th:text="${#numbers.formatDecimal(incomeDifference, 1, 2)} + ' €'">
+                                0.00 €
+                            </h4>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <p class="text-muted mb-1">
+                                Variación de gastos
+                            </p>
+
+                            <h4 th:text="${#numbers.formatDecimal(expenseDifference, 1, 2)} + ' €'">
+                                0.00 €
+                            </h4>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <p class="text-muted mb-1">
+                                Variación del balance
+                            </p>
+
+                            <h4 th:text="${#numbers.formatDecimal(balanceDifference, 1, 2)} + ' €'">
+                                0.00 €
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EVOLUCIÓN MENSUAL -->
+
+            <div class="card mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="card-title mb-4">
+                        Evolución de ingresos y gastos
+                    </h4>
+
+                    <div class="statistics-chart">
+
+                        <canvas id="statisticsEvolutionChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- GASTOS POR CATEGORÍA - GRÁFICO -->
+
+            <div class="card mb-4">
+
+                <div class="card-body">
+
+                    <h4 class="card-title mb-4">
+                        Distribución de gastos por categoría
+                    </h4>
+
+                    <div style="height: 350px;">
+
+                        <canvas id="expensesCategoryChart"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- GASTOS POR CATEGORÍA - LISTA -->
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <h4 class="card-title mb-4">
+                        Gastos por categoría
+                    </h4>
+
+                    <div th:if="${expensesByCategory.isEmpty()}"
+                         class="text-muted">
+
+                        No hay gastos registrados este mes.
+
+                    </div>
+
+                    <div th:each="entry : ${expensesByCategory}"
+                         class="d-flex justify-content-between align-items-center border-bottom py-3">
+
+                        <span th:text="${entry.key}">
+                            Alimentación
+                        </span>
+
+                        <strong>
+
+                            <span th:text="${#numbers.formatDecimal(entry.value, 1, 2)}">
+                                0.00
+                            </span>
+
+                            €
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script th:inline="javascript">
+
+    const monthlyLabels =
+        /*[[${monthlyLabels}]]*/ [];
+
+    const monthlyIncome =
+        /*[[${monthlyIncome}]]*/ [];
+
+    const monthlyExpense =
+        /*[[${monthlyExpense}]]*/ [];
+
+    const categoryLabels =
+        /*[[${expensesByCategory.keySet()}]]*/ [];
+
+    const categoryValues =
+        /*[[${expensesByCategory.values()}]]*/ [];
+
+</script>
+
+
+<script th:src="@{/js/statistics.js}"></script>
+
+</body>
+
+</html>

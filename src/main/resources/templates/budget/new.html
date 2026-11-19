@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title th:text="${editing} ? 'Editar presupuesto - SmartFinance' : 'Nuevo presupuesto - SmartFinance'">
+        Nuevo presupuesto - SmartFinance
+    </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="app-layout">
+
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <main class="content">
+
+        <div class="form-page">
+
+            <div class="mb-4">
+
+                <h1 class="h2"
+                    th:text="${editing} ? 'Editar presupuesto' : 'Nuevo presupuesto'">
+
+                    Nuevo presupuesto
+
+                </h1>
+
+                <p class="text-muted">
+
+                    Define cuánto quieres gastar como máximo
+                    en una categoría durante un mes.
+
+                </p>
+
+            </div>
+
+            <div class="card form-card">
+
+                <div class="card-body">
+
+                    <form th:action="@{/budgets/save}"
+                          th:object="${budget}"
+                          method="post">
+
+                        <input type="hidden"
+                               th:field="*{id}">
+
+                        <div class="mb-4">
+
+                            <label for="category"
+                                   class="form-label">
+                                Categoría
+                            </label>
+
+                            <select class="form-select category-select"
+                                    id="category"
+                                    data-category-type="EXPENSE"
+                                    th:field="*{category}">
+
+                                <option value="">
+                                    Seleccionar
+                                </option>
+
+                                <option th:each="category : ${categories}"
+                                        th:value="${category.name}"
+                                        th:text="${category.name}"></option>
+
+                                <option value="__add_category__">＋ Añadir categoría personalizada</option>
+
+                            </select>
+
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('category')}"
+                                 th:errors="*{category}">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="amount"
+                                   class="form-label">
+                                Límite mensual (€)
+                            </label>
+
+                            <input type="number"
+                                   id="amount"
+                                   class="form-control"
+                                   th:field="*{amount}"
+                                   min="0.01"
+                                   step="0.01"
+                                   placeholder="300.00">
+
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('amount')}"
+                                 th:errors="*{amount}">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="monthInput"
+                                   class="form-label">
+                                Mes
+                            </label>
+
+                            <input type="month"
+                                   id="monthInput"
+                                   class="form-control"
+                                   name="monthInput"
+                                   th:value="${budget.month != null ? #temporals.format(budget.month, 'yyyy-MM') : ''}"
+                                   onchange="document.getElementById('month').value = this.value + '-01'">
+
+                            <input type="hidden"
+                                   id="month"
+                                   th:field="*{month}">
+
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('month')}"
+                                 th:errors="*{month}">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <label for="warningPercentage" class="form-label">
+                                Avisarme al alcanzar (%)
+                            </label>
+
+                            <input type="number"
+                                   id="warningPercentage"
+                                   class="form-control"
+                                   th:field="*{warningPercentage}"
+                                   min="50"
+                                   max="99"
+                                   step="1">
+
+                            <div class="form-text">
+                                Recibirás un aviso al alcanzar este porcentaje y otro si superas el límite.
+                            </div>
+
+                            <div class="text-danger small mt-1"
+                                 th:if="${#fields.hasErrors('warningPercentage')}"
+                                 th:errors="*{warningPercentage}">
+                            </div>
+
+                        </div>
+
+                        <div class="form-actions">
+
+                            <a th:href="@{/budgets}"
+                               class="btn btn-outline-secondary">
+
+                                Cancelar
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary">
+
+                                <i class="bi bi-check-lg me-1"></i>
+
+                                Guardar presupuesto
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/category-select.js"></script>
+
+</body>
+
+</html>

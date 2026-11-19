@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Importar movimientos - SmartFinance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<div class="app-layout">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <main class="content">
+        <div class="page-header mb-4">
+            <div><h1 class="h2 mb-1">Importar movimientos</h1><p class="text-muted mb-0">Importa un extracto bancario CSV a tu cuenta.</p></div>
+        </div>
+        <div class="card shadow-sm"><div class="card-body p-4">
+            <h2 class="h5">Formato reconocido</h2>
+            <p>El archivo debe estar en CSV UTF-8 y puede usar punto y coma, coma o tabulador como separador. La primera fila debe incluir encabezados equivalentes a:</p>
+            <ul>
+                <li><strong>Fecha</strong>: ISO (<code>2026-10-05</code>) o española (<code>05/10/2026</code>).</li>
+                <li><strong>Concepto</strong>, descripción o comercio.</li>
+                <li><strong>Importe</strong>: negativos para gastos y positivos para ingresos.</li>
+                <li><strong>Tipo</strong> (opcional): Ingreso/Gasto, Income/Expense, Abono/Cargo o Credit/Debit. Si existe, prevalece sobre el signo.</li>
+                <li><strong>Categoría</strong> (opcional): una categoría desconocida se añade a tus categorías personales.</li>
+            </ul>
+            <p class="text-muted small">Hasta 2.000 filas y 5 MB. Los movimientos idénticos por fecha, concepto e importe se omiten.</p>
+            <form th:action="@{/movements/import}" method="post" enctype="multipart/form-data" class="mt-4">
+                <label for="file" class="form-label">Archivo CSV</label>
+                <input class="form-control" id="file" name="file" type="file" accept=".csv,text/csv" required>
+                <div class="d-flex gap-2 mt-4">
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-upload me-1"></i>Importar CSV</button>
+                    <a class="btn btn-outline-secondary" th:href="@{/movements}">Cancelar</a>
+                </div>
+            </form>
+        </div></div>
+    </main>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

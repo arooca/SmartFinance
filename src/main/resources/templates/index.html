@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>SmartFinance - Gestiona tus finanzas</title>
+
+    <meta name="description"
+          content="SmartFinance te ayuda a controlar tus ingresos, gastos, presupuestos y movimientos financieros desde un único lugar.">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+    <style>
+
+        .landing-page {
+            min-height: 100vh;
+            background: var(--background);
+        }
+
+        .landing-navbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .landing-brand {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .landing-hero {
+            padding: 90px 20px 70px;
+        }
+
+        .landing-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: .9rem;
+        }
+
+        .landing-title {
+            max-width: 800px;
+            margin: 25px auto 20px;
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+        }
+
+        .landing-description {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--text-light);
+            font-size: 1.15rem;
+            line-height: 1.7;
+        }
+
+        .landing-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .landing-features {
+            padding: 20px 20px 80px;
+        }
+
+        .landing-feature {
+            height: 100%;
+            padding: 30px;
+            background: var(--surface);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .landing-feature-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-radius: 14px;
+            background: #dbeafe;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .landing-feature h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .landing-feature p {
+            margin: 0;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        .landing-footer {
+            padding: 25px 20px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+
+            .landing-hero {
+                padding: 60px 16px 50px;
+            }
+
+            .landing-title {
+                font-size: 2.5rem;
+            }
+
+            .landing-description {
+                font-size: 1rem;
+            }
+
+            .landing-actions {
+                flex-direction: column;
+            }
+
+            .landing-actions .btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="landing-page">
+
+    <nav class="landing-navbar">
+
+        <div class="container py-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <a th:href="@{/}"
+                   class="landing-brand text-decoration-none">
+
+                    <i class="bi bi-wallet2 me-2"></i>
+                    SmartFinance
+
+                </a>
+
+                <div class="d-flex gap-2">
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm theme-toggle"
+                            data-theme-toggle aria-label="Activar modo oscuro" title="Activar modo oscuro">
+                        <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
+                        <span data-theme-label>Modo oscuro</span>
+                    </button>
+
+                    <a th:href="@{/login}"
+                       class="btn btn-outline-primary btn-sm">
+
+                        Iniciar sesión
+
+                    </a>
+
+                    <a th:href="@{/register}"
+                       class="btn btn-primary btn-sm">
+
+                        Crear cuenta
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <main>
+
+        <section class="landing-hero text-center">
+
+            <div class="container">
+
+                <span class="landing-badge">
+
+                    <i class="bi bi-wallet2"></i>
+
+                    Gestión financiera personal
+
+                </span>
+
+                <h1 class="landing-title">
+
+                    Controla tus finanzas de forma sencilla
+
+                </h1>
+
+                <p class="landing-description">
+
+                    SmartFinance te permite gestionar tus ingresos,
+                    gastos, presupuestos y movimientos financieros
+                    desde un único lugar.
+
+                </p>
+
+                <div class="landing-actions">
+
+                    <a th:href="@{/register}"
+                       class="btn btn-primary btn-lg">
+
+                        <i class="bi bi-person-plus me-2"></i>
+
+                        Crear mi cuenta
+
+                    </a>
+
+                    <a th:href="@{/login}"
+                       class="btn btn-outline-secondary btn-lg">
+
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+
+                        Iniciar sesión
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="landing-features">
+
+            <div class="container">
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+
+                        <article class="landing-feature">
+
+                            <div class="landing-feature-icon">
+
+                                <i class="bi bi-arrow-left-right"></i>
+
+                            </div>
+
+                            <h2>
+                                Controla tus movimientos
+                            </h2>
+
+                            <p>
+
+                                Registra y organiza tus ingresos y
+                                gastos para conocer mejor cómo gestionas
+                                tu dinero.
+
+                            </p>
+
+                        </article>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <article class="landing-feature">
+
+                            <div class="landing-feature-icon">
+
+                                <i class="bi bi-pie-chart"></i>
+
+                            </div>
+
+                            <h2>
+                                Analiza tus finanzas
+                            </h2>
+
+                            <p>
+
+                                Consulta estadísticas y evolución de tus
+                                ingresos y gastos para tener una visión
+                                clara de tu situación financiera.
+
+                            </p>
+
+                        </article>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <article class="landing-feature">
+
+                            <div class="landing-feature-icon">
+
+                                <i class="bi bi-bullseye"></i>
+
+                            </div>
+
+                            <h2>
+                                Organiza tus presupuestos
+                            </h2>
+
+                            <p>
+
+                                Define límites de gasto por categoría y
+                                controla su evolución durante cada mes.
+
+                            </p>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="landing-footer">
+
+        <div class="container">
+
+            <small>
+                SmartFinance · Gestión financiera personal
+            </small>
+
+        </div>
+
+    </footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/theme.js}" defer></script>
+
+</body>
+
+</html>
